@@ -312,7 +312,7 @@ avr_timer_tov(
 				avr_cycle_timer_register(avr,
 					p->comp[compi].comp_cycles - (avr->cycle - next),
 					dispatch[compi], p);
-			} else if (p->tov_cycles == p->comp[compi].comp_cycles && !start)
+			} else if (p->tov_cycles == p->comp[compi].comp_cycles && (!start || p->wgm_op_mode_kind == avr_timer_wgm_ctc))
 				dispatch[compi](avr, when, param);
 		}
 	}
@@ -411,7 +411,7 @@ avr_timer_tcnt_write(
 		//	printf("%s-%c %d/%d -- cycles %d/%d\n", __FUNCTION__, p->name, tcnt, p->tov_top, (uint32_t)cycles, (uint32_t)p->tov_cycles);
 
 		// this reset the timers bases to the new base
-		if (p->tov_cycles > 1) {
+		if (p->tov_cycles >= 1) {
 			avr_cycle_timer_register(avr, p->tov_cycles - cycles, avr_timer_tov, p);
 			p->tov_base = 0;
 			avr_timer_tov(avr, avr->cycle - cycles, p);
@@ -511,7 +511,7 @@ avr_timer_configure(
 	}
 
 	if (!use_ext_clock || virt_ext_clock) {
-		if (p->tov_cycles > 1) {
+		if (p->tov_cycles >= 1) {
 			if (reset) {
 				avr_cycle_timer_register(avr, p->tov_cycles, avr_timer_tov, p);
 				// calling it once, with when == 0 tells it to arm the A/B/C timers if needed
