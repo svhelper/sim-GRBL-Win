@@ -1,0 +1,3 @@
+[submodule "examples/board_grbl_cnc/grbl"]
+	path = examples/board_grbl_cnc/grbl
+	url = https://github.com/gnea/grbl.git
