@@ -1,0 +1,40 @@
+{
+     // Use IntelliSense to learn about possible attributes.
+     // Hover to view descriptions of existing attributes.
+     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+     "version": "0.2.0",
+     "configurations": [
+         {
+             "type": "gdb",
+             "request": "attach",
+             "name": "Attach to gdbserver",
+             "executable": "${workspaceRoot}/examples/board_grbl_cnc/grbl.axf",
+             "target": ":1234", 
+             "_preLaunchTask": "start grbl server",
+             "remote": true,
+             "cwd": "${workspaceRoot}/examples/board_grbl_cnc",
+             "valuesFormatting": "parseText",
+             "windows": {"gdbpath": "F:\\AVR\\bin\\Atmel_Toolchain\\AVR8_GCC\\Native\\3.4.1061\\avr8-gnu-toolchain\\bin\\avr-gdb.exe"},
+         },
+         {
+             "name": "(gdb) Launch",
+             "type": "cppdbg",
+             "request": "launch",
+             "program": "${workspaceRoot}/examples/board_grbl_cnc/grbl_cnc.exe",
+             "args": ["\\\\.\\COM2"],
+             "stopAtEntry": true,
+             "cwd": "${workspaceRoot}/examples/board_grbl_cnc/",
+             "environment": [],
+             "externalConsole": true,
+             "MIMode": "gdb",
+             "windows": { "miDebuggerPath": "f:\\mingw\\bin\\gdb.exe"},
+             "setupCommands": [
+                 {
+                     "description": "Enable pretty-printing for gdb",
+                     "text": "-enable-pretty-printing",
+                     "ignoreFailures": true
+                 }
+             ]
+         }
+     ]
+}

@@ -1,0 +1,41 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "F:\\MinGW\\include\\"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__MINGW32__=1"
+            ],
+            "windowsSdkVersion": "10.0.17763.0",
+            "compilerPath": "F:/MinGW/bin/gcc.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        },
+        {
+            "name": "AVR8",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "F:\\AVR\\bin\\Atmel_Toolchain\\AVR8_GCC\\Native\\3.4.1061\\avr8-gnu-toolchain\\avr\\include\\**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__MINGW32__=1"
+            ],
+            "windowsSdkVersion": "10.0.17763.0",
+            "compilerPath": "F:/AVR/bin/Atmel_Toolchain/AVR8_GCC/Native/3.4.1061/avr8-gnu-toolchain/bin/avr-gdb.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

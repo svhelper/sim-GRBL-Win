@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "curses.h": "c",
+        "xcurses.h": "c",
+        "pthread.h": "c",
+        "uart_udp.h": "c",
+        "sim_network.h": "c",
+        "winsock2.h": "c",
+        "windows.h": "c",
+        "_winsock.h": "c",
+        "sdkddkver.h": "c",
+        "winsock.h": "c",
+        "avr_mcu_section.h": "c",
+        "fcntl.h": "c",
+        "unistd.h": "c",
+        "_mingw.h": "c",
+        "sim_hex.h": "c",
+        "iom328p.h": "c",
+        "sim_megax8.h": "c",
+        "sim_time.h": "c",
+        "avr_timer.h": "c",
+        "sim_io.h": "c",
+        "avr_uart.h": "c"
+    }
+}
