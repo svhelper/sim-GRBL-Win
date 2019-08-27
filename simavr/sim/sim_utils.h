@@ -48,4 +48,7 @@ argv_parse(
 	argv_p	argv,
 	char * line );
 
+
+extern char *strsep(char **stringp, const char *delim);
+
 #endif /* __SIM_UTILS_H__ */

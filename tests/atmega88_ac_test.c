@@ -24,7 +24,7 @@
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <util/delay.h>
-#include <avr/cpufunc.h>
+//#include <avr/cpufunc.h>
 
 /*
  * This demonstrate how to use the avr_mcu_section.h file
@@ -78,21 +78,21 @@ int main(void)
 	// check all the inputs
 	for(uint8_t t = 0; t < 2; ++t) {		// run twice, first with AIN0, second with bandgap
 		ADCSRB = 0;		// multiplexer off
-		_NOP();	// for sync delay
+		__asm__ __volatile__ ("nop");	// for sync delay
 		output_value();
 		// now with multiplexer
 		ADCSRB = _BV(ACME);
-		_NOP();
+		__asm__ __volatile__ ("nop");
 		for(uint8_t i = 0; i < 8;++i)
 		{
 			// this is relying that all 3 mux bits are next to each other, which is the case for atmega88
 			output_value();
 			ADMUX += _BV(MUX0);
-			_NOP();
+			__asm__ __volatile__ ("nop");
 		}
 		// switch to bandgap
 		ACSR |= _BV(ACBG);
-		_NOP();
+		__asm__ __volatile__ ("nop");
 	}
 
 	putchar('\n');

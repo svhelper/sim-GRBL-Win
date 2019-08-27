@@ -24,6 +24,7 @@
 #define __UART_UDP_H___
 
 #include "sim_network.h"
+#include <pthread.h>
 #include "sim_irq.h"
 #include "fifo_declare.h"
 

@@ -29,9 +29,7 @@ IPATH += ${simavr}/simavr/sim
 VPATH = .
 VPATH += ../parts
 
-LDFLAGS += -lpthread -lutil
-
-include ../Makefile.opengl
+# LDFLAGS += -lpthread -lutil
 
 all: obj ${firmware} ${target}
 
@@ -43,6 +41,13 @@ ${board} : ${OBJ}/uart_pty.o
 ${board} : ${OBJ}/${target}.o
 
 ${target}: ${board}
+# FIXME uname -o doesn't work on BSD
+ifeq (${shell uname -o}, Msys)
+	ln -sf $< $@.exe
+else
+	ln -sf $< $@
+endif
+
 	@echo $@ done
 
 clean: clean-${OBJ}

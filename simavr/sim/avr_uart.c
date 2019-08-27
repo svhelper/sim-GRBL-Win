@@ -168,7 +168,7 @@ avr_uart_status_read(
 		if (p->flags & AVR_UART_FLAG_POLL_SLEEP) {
 
 			if (ri && ti)
-				usleep(1);
+				(void)0;//usleep(1);
 		}
 		// if reception is idle and the fifo is empty, tell whomever there is room
 		if (avr_regbit_get(avr, p->rxen) && uart_fifo_isempty(&p->input)) {

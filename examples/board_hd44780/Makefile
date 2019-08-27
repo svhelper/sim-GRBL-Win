@@ -47,6 +47,13 @@ ${board} : ${OBJ}/hd44780_glut.o
 ${board} : ${OBJ}/${target}.o
 
 ${target}: ${board}
+# FIXME uname -o doesn't work on BSD
+ifeq (${shell uname -o}, Msys)
+	ln -sf $< $@.exe
+else
+	ln -sf $< $@
+endif
+
 	@echo $@ done
 
 clean: clean-${OBJ}

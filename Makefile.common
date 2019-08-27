@@ -39,7 +39,7 @@ SIMAVR		:= ${shell for p in . .. ../.. ../../..;do test -d $$p/simavr/sim && ech
 # get the first character of what the compiler says it is, unless it's 'x86_64' doh
 ARCH 		:= ${shell $(CC) -dumpmachine | sed -e 's/^x/i/' -e 's/\(.\).*/\1/'}
 
-CFLAGS		+= -O2 -Wall -Wextra -Wno-unused-parameter \
+CFLAGS		+= -O0 -Wall -Wextra -Wno-unused-parameter \
 			-Wno-unused-result -Wno-missing-field-initializers \
 			-Wno-sign-compare
 CFLAGS		+= -g
@@ -85,7 +85,7 @@ else
 endif
 
 # FIXME uname -o doesn't work on bsd derivatives
-#WIN := ${shell uname -o}
+WIN := ${shell uname -o}
 
 ifeq (${WIN}, Msys)
 AVR_ROOT    := ${shell echo "${AVR32_HOME}" | tr '\\' '/'}
@@ -94,6 +94,7 @@ IPATH       += ${PREFIX}/include
 CFLAGS      += -I${PREFIX}/include
 LDFLAGS		+= -L/lib -L/local/lib
 CFLAGS 		+= -DNO_COLOR
+IPATH		+= /local/include /local/include/libelf
 else
 CFLAGS 		+= -fPIC
 endif
@@ -175,21 +176,21 @@ ifneq ($(E),)
 	@echo CORE $<
 endif
 	${E}$(CC) $(CPPFLAGS) $(CFLAGS) $(CORE_CFLAGS) -MMD \
-		${AVR_CPPFLAGS} \
+		${AVR_CPPFLAGS} -O0 \
 		$<  -c -o $@
 
 ${OBJ}/%.o: %.c
 ifneq ($(E),)
 	@echo CC $<
 endif
-	${E}$(CC) $(CPPFLAGS) $(CFLAGS) -MMD \
+	${E}$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -O0 \
 		$<  -c -o $@
 
 ${OBJ}/%.elf:
 ifneq ($(E),)
 	@echo LD $@
 endif
-	${E}$(CC) -MMD ${CFLAGS}  ${LFLAGS} -o $@ ${filter %.o,$^} $(LDFLAGS)
+	${E}$(CC) -MMD ${CFLAGS}  ${LFLAGS} -o $@ ${filter %.o,$^} $(LDFLAGS) -O0
 
 
 .PRECIOUS: ${OBJ}/%.a ${OBJ}/%.so.1
@@ -209,11 +210,11 @@ ${OBJ}/%.so.1: ${OBJ}/%.a
 ifneq ($(E),)
 	@echo SHARED $@
 endif
-	${E}$(CC) -o $@ -shared \
+	${E}$(CC) -O0 -o $@ -shared \
 		-Wl,--whole-archive,-soname,${basename ${notdir $@}}.1 \
 		${filter %.o %.a,$^} \
 		 -Wl,--no-whole-archive \
-		${filter-out -l%, $(LDFLAGS)} ${EXTRA_LDFLAGS}
+		${filter-out -l%, $(LDFLAGS)} ${EXTRA_LDFLAGS} -O0
 
 ${OBJ}/%.so: ${OBJ}/%.so.1
 	ln -sf ${notdir $<} $@

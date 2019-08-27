@@ -34,6 +34,8 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <libutil.h>
+#elif defined(__MINGW32__)
+// Win32 does not support PTY
 #else
 #include <pty.h>
 #endif
@@ -249,16 +251,21 @@ uart_pty_init(
 			(getenv("SIMAVR_UART_XTERM") && atoi(getenv("SIMAVR_UART_XTERM"))) ;
 
 	for (int ti = 0; ti < 1 + hastap; ti++) {
-		int m, s;
+		int m = 0;
 
+#ifndef __MINGW32__
+		int s;
 		if (openpty(&m, &s, p->port[ti].slavename, NULL, NULL) < 0) {
 			fprintf(stderr, "%s: Can't create pty: %s", __FUNCTION__, strerror(errno));
 			return ;
 		}
+#endif /*__MINGW32__*/
+#ifdef __FreeBSD__
 		struct termios tio;
 		tcgetattr(m, &tio);
 		cfmakeraw(&tio);
 		tcsetattr(m, TCSANOW, &tio);
+#endif /*__FreeBSD__*/
 		p->port[ti].s = m;
 		p->port[ti].tap = ti != 0;
 		p->port[ti].crlf = ti != 0;
@@ -308,6 +315,7 @@ uart_pty_connect(
 		avr_irq_register_notify(xoff, uart_pty_xoff_hook, p);
 
 	for (int ti = 0; ti < 1; ti++) if (p->port[ti].s) {
+#ifndef __MINGW32__
 		char link[128];
 		sprintf(link, "/tmp/simavr-uart%s%c", ti == 1 ? "tap" : "", uart);
 		unlink(link);
@@ -316,7 +324,9 @@ uart_pty_connect(
 		} else {
 			printf("%s: %s now points to %s\n", __func__, link, p->port[ti].slavename);
 		}
+#endif /*__MINGW32__*/
 	}
+#ifdef __FreeBSD__
 	if (getenv("SIMAVR_UART_XTERM") && atoi(getenv("SIMAVR_UART_XTERM"))) {
 		char cmd[256];
 		sprintf(cmd, "xterm -e picocom -b 115200 %s >/dev/null 2>&1 &",
@@ -324,5 +334,5 @@ uart_pty_connect(
 		system(cmd);
 	} else
 		printf("note: export SIMAVR_UART_XTERM=1 and install picocom to get a terminal\n");
+#endif /*__FreeBSD__*/
 }
-

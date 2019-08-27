@@ -350,8 +350,8 @@ avr_callback_sleep_raw(
 	uint64_t runtime_ns = avr_get_time_stamp(avr);
 	if (runtime_ns >= deadline_ns)
 		return;
-	uint64_t sleep_us = (deadline_ns - runtime_ns) / 1000;
-	usleep(sleep_us);
+	(void)0;//uint64_t sleep_ms = (deadline_ns - runtime_ns) / 1000000;
+	(void)0;//sleep(sleep_ms);
 	return;
 }
 

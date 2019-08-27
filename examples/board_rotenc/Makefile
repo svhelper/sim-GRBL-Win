@@ -48,6 +48,13 @@ ${board} : ${OBJ}/${target}.o
 ${board} : ${OBJ}/rotenc.o
 
 ${target}: ${board}
+# FIXME uname -o doesn't work on BSD
+ifeq (${shell uname -o}, Msys)
+	ln -sf $< $@.exe
+else
+	ln -sf $< $@
+endif
+
 	@echo $@ done
 
 clean: clean-${OBJ}

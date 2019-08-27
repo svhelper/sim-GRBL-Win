@@ -136,13 +136,13 @@ main(
 			++pi;
 			struct {
 				char     kind[64];
-				uint8_t  mask;
+				uint16_t mask;
 				uint16_t addr;
 				char     name[64];
 			} trace;
 			const int n_args = sscanf(
 				argv[pi],
-				"%63[^=]=%63[^@]@0x%hx/0x%hhx",
+				"%63[^=]=%63[^@]@0x%hx/0x%hx",
 				&trace.name[0],
 				&trace.kind[0],
 				&trace.addr,

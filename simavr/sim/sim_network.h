@@ -30,8 +30,8 @@ extern "C" {
 
 // Windows with MinGW
 
-#include <windows.h>
 #include <winsock2.h>
+#include <windows.h>
 #include <ws2tcpip.h>
 
 #define send(sockfd, buf, len, flags) \
@@ -40,7 +40,12 @@ extern "C" {
 	setsockopt( (sockfd), (level), (optname), (void *)(optval), (optlen))
 #define recv(sockfd, buf, len, flags) \
 	(ssize_t)recv( (sockfd), (char *)(buf), (len), (flags))
-#define sleep(x) Sleep((x)*1000)
+#define sendto(sockfd, buf, len, flags, sockaddr_, p) \
+	(ssize_t)sendto( (sockfd), (const char *)(buf), (len), (flags), (sockaddr_), (p))
+#define recvfrom(sockfd, buf, len, flags, sockaddr_, p) \
+	(ssize_t)recvfrom( (sockfd), (char *)(buf), (len), (flags), (sockaddr_), (p))
+
+//#define sleep(x) Sleep((x)*1000)
 
 static inline int network_init(void)
 {
